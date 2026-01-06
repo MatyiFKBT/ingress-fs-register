@@ -319,9 +319,9 @@ export default function GoogleFormBuilder() {
 ## Menetrend
 - Regisztrálj az eseményre a Fevgames oldalán!
 - {{halfHourBefore}}-tól: Találkozó a helyszínen, az esemény részletezése
-- {{fiveMinutesBefore}}: regisztráció – kezdő statisztika elküldése, csoportkép (A kezdő statisztikát küldd Telegramon [@HungaryIFSBot](https://t.me/HungaryIFSBot)-nak)
+- {{fiveMinutesBefore}}: regisztráció – kezdő statisztika elküldése, csoportkép (A kezdő statisztikát küldd Telegramon @HungaryIFSBot-nak)
 - {{startTime}}–{{endTime}}: játék a helyszínen, beszélgetés a játékostársakkal, kódfejtés (*)
-- {{endTime}} előtt: befejező statisztika elküldése ([@HungaryIFSBot](https://t.me/HungaryIFSBot)-nak)
+- {{endTime}} előtt: befejező statisztika elküldése (@HungaryIFSBot-nak)
 - {{endTime}}: Restock portál aktív, opcionális after party
 - {{endTimePlus5hr}}: Az eseményen megfejtett passcode érvényessége lejár.
 ## Kódfejtés
