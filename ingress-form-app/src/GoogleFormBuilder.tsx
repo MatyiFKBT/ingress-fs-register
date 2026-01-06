@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FormField } from './formData';
 import { formData, buildGoogleFormUrl } from './formData';
+import MarkdownEditor from './MarkdownEditor';
 
 export default function GoogleFormBuilder() {
   const [formFields, setFormFields] = useState<FormField[]>(formData);
@@ -100,15 +101,29 @@ export default function GoogleFormBuilder() {
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-              {formFields.map((field) => (
-                <div key={field.id} className="space-y-1">
-                  <label className="block text-xs font-medium text-gray-700">
-                    {field.name}
-                  </label>
-                  {renderField(field)}
-                </div>
-              ))}
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                {formFields.filter(field => field.name !== "Event Description").map((field) => (
+                  <div key={field.id} className="space-y-1">
+                    <label className="block text-xs font-medium text-gray-700">
+                      {field.name}
+                    </label>
+                    {renderField(field)}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Event Description with Markdown Editor */}
+              <MarkdownEditor
+                initialValue={formFields.find(f => f.name === "Event Description")?.value || ''}
+                onChange={(_, html) => {
+                  setFormFields(prev => 
+                    prev.map(f => 
+                      f.name === "Event Description" ? { ...f, value: html } : f
+                    )
+                  );
+                }}
+              />
             </div>
             
             <div className="pt-3">
