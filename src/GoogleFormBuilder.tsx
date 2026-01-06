@@ -9,8 +9,8 @@ export default function GoogleFormBuilder() {
   const [restockMapsUrl, setRestockMapsUrl] = useState('');
 
   const handleFieldChange = (id: number, field: 'value' | 'other', newValue: string) => {
-    setFormFields(prev => 
-      prev.map(f => 
+    setFormFields(prev =>
+      prev.map(f =>
         f.id === id ? { ...f, [field]: newValue } : f
       )
     );
@@ -31,15 +31,15 @@ export default function GoogleFormBuilder() {
       const url = new URL(googleMapsUrl);
       const ll = url.searchParams.get('ll');
       const q = url.searchParams.get('q');
-      
+
       if (ll && q) {
         // Extract coordinates from ll parameter
         const [lat, lng] = ll.split(',');
-        
+
         // Extract portal name from q parameter
         // Format: "coordinates (name)" - just regular space and parentheses
         let portalName = 'Unknown Portal';
-        
+
         // Pattern: "47.491558,19.069074 (Oroszlanos Kapubejaro)"
         const nameMatch = q.match(/^\s*[0-9.,]+\s*\((.+)\)\s*$/);
         if (nameMatch) {
@@ -57,25 +57,25 @@ export default function GoogleFormBuilder() {
             }
           }
         }
-        
+
         console.log('Q parameter:', q); // Debug log
         console.log('Parsed portal name:', portalName); // Debug log
-        
+
         // Update Base Portal Name
-        setFormFields(prev => 
-          prev.map(f => 
+        setFormFields(prev =>
+          prev.map(f =>
             f.name === "Base Portal Name" ? { ...f, value: portalName } : f
           )
         );
-        
+
         // Update Base Portal URL with Intel link using the extracted coordinates
         const intelUrl = `https://intel.ingress.com/intel?pll=${lat},${lng}`;
-        setFormFields(prev => 
-          prev.map(f => 
+        setFormFields(prev =>
+          prev.map(f =>
             f.name === "Base Portal URL" ? { ...f, value: intelUrl } : f
           )
         );
-        
+
         // Clear the input after successful parsing
         setGoogleMapsUrl('');
       } else {
@@ -93,14 +93,14 @@ export default function GoogleFormBuilder() {
       const url = new URL(restockMapsUrl);
       const ll = url.searchParams.get('ll');
       const q = url.searchParams.get('q');
-      
+
       if (ll && q) {
         // Extract coordinates from ll parameter
         const [lat, lng] = ll.split(',');
-        
+
         // Extract portal name from q parameter
         let portalName = 'Unknown Portal';
-        
+
         const nameMatch = q.match(/^\s*[0-9.,]+\s*\((.+)\)\s*$/);
         if (nameMatch) {
           portalName = nameMatch[1].trim();
@@ -115,25 +115,25 @@ export default function GoogleFormBuilder() {
             }
           }
         }
-        
+
         console.log('Restock Q parameter:', q);
         console.log('Parsed restock portal name:', portalName);
-        
+
         // Update Restocking Portal Name
-        setFormFields(prev => 
-          prev.map(f => 
+        setFormFields(prev =>
+          prev.map(f =>
             f.name === "Restocking Portal Name" ? { ...f, value: portalName } : f
           )
         );
-        
+
         // Update Restocking Portal Intel URL
         const intelUrl = `https://intel.ingress.com/intel?pll=${lat},${lng}`;
-        setFormFields(prev => 
-          prev.map(f => 
+        setFormFields(prev =>
+          prev.map(f =>
             f.name === "Restocking Portal Intel URL" ? { ...f, value: intelUrl } : f
           )
         );
-        
+
         // Clear input after successful parsing
         setRestockMapsUrl('');
       } else {
@@ -144,6 +144,22 @@ export default function GoogleFormBuilder() {
     }
   };
 
+  // Helper function to calculate time offsets
+  const calculateTimeOffset = (startTime: string, offsetMinutes: number): string => {
+    if (!startTime) return '';
+
+    const [hours, minutes] = startTime.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    date.setMinutes(date.getMinutes() + offsetMinutes);
+
+    return date.toLocaleTimeString('hu-HU', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).replace(':', '.');
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const googleFormUrl = buildGoogleFormUrl(formFields);
@@ -152,7 +168,7 @@ export default function GoogleFormBuilder() {
 
   const renderField = (field: FormField) => {
     const baseInputClass = "w-full px-2 py-1 border border-gray-300 rounded-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs";
-    
+
     if (field.other !== undefined) {
       return (
         <div className="space-y-1">
@@ -177,7 +193,7 @@ export default function GoogleFormBuilder() {
         </div>
       );
     }
-    
+
     if (field.name.includes('email')) {
       return (
         <input
@@ -188,7 +204,7 @@ export default function GoogleFormBuilder() {
         />
       );
     }
-    
+
     if (field.name.includes('URL') || field.name.includes('Link')) {
       return (
         <input
@@ -199,7 +215,7 @@ export default function GoogleFormBuilder() {
         />
       );
     }
-    
+
     if (field.name.includes('Description')) {
       return (
         <textarea
@@ -210,7 +226,7 @@ export default function GoogleFormBuilder() {
         />
       );
     }
-    
+
     return (
       <input
         type="text"
@@ -229,7 +245,7 @@ export default function GoogleFormBuilder() {
             <h1 className="text-xl font-bold text-gray-900 mb-1">Ingress FS Event Form Builder</h1>
             <p className="text-sm text-gray-600">Fill form below and submit to open pre-filled Google Form.</p>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="space-y-3">
               {/* Google Maps URL Parsers - Side by Side */}
@@ -294,23 +310,32 @@ export default function GoogleFormBuilder() {
                   </div>
                 ))}
               </div>
-              
+
               {/* Event Description with Markdown Editor */}
               <MarkdownEditor
-                initialValue={`# Ingress FS Event in {{city}}, {{country}}
+                initialValue={`First Saturday @ {{city}}, {{country}}
+{{eventType}} IFS esemény!
+Érdemes sok kicsi (L1/L2) rezonátorral, meg persze XMP-vel készülni.
+## Menetrend
+- Regisztrálj az eseményre a Fevgames oldalán!
+- {{halfHourBefore}}-tól: Találkozó a helyszínen, az esemény részletezése
+- {{fiveMinutesBefore}}: regisztráció – kezdő statisztika elküldése, csoportkép (A kezdő statisztikát küldd Telegramon [@HungaryIFSBot](https://t.me/HungaryIFSBot)-nak)
+- {{startTime}}–{{endTime}}: játék a helyszínen, beszélgetés a játékostársakkal, kódfejtés (*)
+- {{endTime}} előtt: befejező statisztika elküldése ([@HungaryIFSBot](https://t.me/HungaryIFSBot)-nak)
+- {{endTime}}: Restock portál aktív, opcionális after party
+- {{endTimePlus5hr}}: Az eseményen megfejtett passcode érvényessége lejár.
+## Kódfejtés
+Az FS esemény egyik követelménye, hogy közösen megoldjuk a helyszínen kapott feladatot, ami egy értékes passcode-dal jutalmazza a résztvevőket.
+A helyszínen lesz 11 portál, amelyek meghackelése során különféle Media tárgyakat dobnak majd – ezek tartalmára lesz szükség a kód megfejtéséhez.
+Jegyezd fel, hogy melyik Media melyik portálból jött!
+A kódfejtéshez szükséges 11 portál az esemény napján derül ki, és csak az esemény ideje alatt dob Media-t.
+## FS Badge
+Az FS badge megszerzéséhez részt kell venni az Onsite eseményen, és el kell érni legalább 10 000 AP-t az esemény ideje alatt (120 perc).
 
-Join us for an exciting **First Saturday** event!
-
-## Event Details
-- **Time:** {{startTime}}
-- **Type:** {{eventType}}
-- **Base Portal:** {{basePortal}}
-- **Restock Portal:** {{restockPortal}}
-
-Bring your friends and let's have some fun!`}
+Legutóbb frissítve: {{currentDate}}`}
                 onChange={(_, html) => {
-                  setFormFields(prev => 
-                    prev.map(f => 
+                  setFormFields(prev =>
+                    prev.map(f =>
                       f.name === "Event Description" ? { ...f, value: html } : f
                     )
                   );
@@ -321,11 +346,16 @@ Bring your friends and let's have some fun!`}
                   startTime: formFields.find(f => f.name === "Event Start Time")?.value || '',
                   eventType: formFields.find(f => f.name === "Event Type")?.value || '',
                   basePortal: formFields.find(f => f.name === "Base Portal Name")?.value || '',
-                  restockPortal: formFields.find(f => f.name === "Restocking Portal Name")?.value || ''
+                  restockPortal: formFields.find(f => f.name === "Restocking Portal Name")?.value || '',
+                  currentDate: new Date().toLocaleDateString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\./g, '.'),
+                  halfHourBefore: calculateTimeOffset(formFields.find(f => f.name === "Event Start Time")?.value || '', -30),
+                  fiveMinutesBefore: calculateTimeOffset(formFields.find(f => f.name === "Event Start Time")?.value || '', -5),
+                  endTime: calculateTimeOffset(formFields.find(f => f.name === "Event Start Time")?.value || '', 120),
+                  endTimePlus5hr: calculateTimeOffset(formFields.find(f => f.name === "Event Start Time")?.value || '', 300)
                 }}
               />
             </div>
-            
+
             <div className="pt-3">
               <button
                 type="submit"
