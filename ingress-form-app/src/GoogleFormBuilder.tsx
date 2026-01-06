@@ -20,7 +20,7 @@ export default function GoogleFormBuilder() {
   };
 
   const renderField = (field: FormField) => {
-    const baseInputClass = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm";
+    const baseInputClass = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm";
     
     if (field.other !== undefined) {
       return (
@@ -93,7 +93,7 @@ export default function GoogleFormBuilder() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-sm p-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Ingress FS Event Form Builder</h1>
           <p className="text-gray-600 mb-6">Fill in the form below and submit to open the pre-filled Google Form.</p>
           
