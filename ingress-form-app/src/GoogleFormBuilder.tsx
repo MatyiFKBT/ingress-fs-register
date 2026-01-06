@@ -20,17 +20,17 @@ export default function GoogleFormBuilder() {
   };
 
   const renderField = (field: FormField) => {
-    const baseInputClass = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm";
+    const baseInputClass = "w-full px-2 py-1 border border-gray-300 rounded-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs";
     
     if (field.other !== undefined) {
       return (
-        <div className="space-y-2">
+        <div className="space-y-1">
           <select
             value={field.value || ''}
             onChange={(e) => handleFieldChange(field.id, 'value', e.target.value)}
             className={baseInputClass}
           >
-            <option value="">Select an option</option>
+            <option value="">Select option</option>
             <option value="English">English</option>
             <option value="Spanish">Spanish</option>
             <option value="French">French</option>
@@ -38,7 +38,7 @@ export default function GoogleFormBuilder() {
           </select>
           <input
             type="text"
-            placeholder="Or specify other language"
+            placeholder="Or specify other"
             value={field.other || ''}
             onChange={(e) => handleFieldChange(field.id, 'other', e.target.value)}
             className={baseInputClass}
@@ -74,7 +74,7 @@ export default function GoogleFormBuilder() {
         <textarea
           value={field.value || ''}
           onChange={(e) => handleFieldChange(field.id, 'value', e.target.value)}
-          rows={3}
+          rows={2}
           className={baseInputClass}
         />
       );
@@ -91,17 +91,19 @@ export default function GoogleFormBuilder() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Ingress FS Event Form Builder</h1>
-          <p className="text-gray-600 mb-6">Fill in the form below and submit to open the pre-filled Google Form.</p>
+    <div className="min-h-screen bg-gray-50 py-4 px-2">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-sm shadow-sm p-4">
+          <div className="mb-4">
+            <h1 className="text-xl font-bold text-gray-900 mb-1">Ingress FS Event Form Builder</h1>
+            <p className="text-sm text-gray-600">Fill form below and submit to open pre-filled Google Form.</p>
+          </div>
           
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
               {formFields.map((field) => (
                 <div key={field.id} className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-xs font-medium text-gray-700">
                     {field.name}
                   </label>
                   {renderField(field)}
@@ -109,10 +111,10 @@ export default function GoogleFormBuilder() {
               ))}
             </div>
             
-            <div className="pt-4">
+            <div className="pt-3">
               <button
                 type="submit"
-                className="w-full md:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-sm hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
               >
                 Open Google Form
               </button>
