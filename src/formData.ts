@@ -35,12 +35,12 @@ export const formData: FormField[] = [
   {
     "id": 1756031242,
     "name": "Base Portal Name",
-    value: "Base portal"
+    value: "Corvin Mozi"
   },
   {
     "id": 1702289666,
     "name": "Base Portal URL",
-    value: "https://intel.ingress.com"
+    value: "https://intel.ingress.com/intel?pll=47.486011,19.071416"
   },
   {
     "id": 1570769333,
@@ -49,12 +49,12 @@ export const formData: FormField[] = [
   {
     "id": 2839749,
     "name": "Restocking Portal Name",
-    value: "Blue House"
+    value: "Corvin Köz 1956-os emlékmű"
   },
   {
     "id": 158918171,
     "name": "Restocking Portal Intel URL",
-    value: "https://intel.ingress.com/intel?pll=47.491268,19.06873"
+    value: "https://intel.ingress.com/intel?pll=47.486197,19.070418"
   },
   {
     "id": 221911722,
