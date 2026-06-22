@@ -315,6 +315,7 @@ export default function GoogleFormBuilder() {
               <MarkdownEditor
                 initialValue={`First Saturday @ {{city}}, {{country}}
 {{eventType}} IFS esemény!
+FONTOS: Az érvényes részvétel feltétele {{startTime}} és {{endTime}} között meg kell hackelni legalább egy portált ami Media-t dob.
 Érdemes sok kicsi (L1/L2) rezonátorral, meg persze XMP-vel készülni.
 ## Menetrend
 - Regisztrálj az eseményre a Fevgames oldalán!
@@ -330,7 +331,7 @@ A helyszínen lesz 11 portál, amelyek meghackelése során különféle Media t
 Jegyezd fel, hogy melyik Media melyik portálból jött!
 A kódfejtéshez szükséges 11 portál az esemény napján derül ki, és csak az esemény ideje alatt dob Media-t.
 ## FS Badge
-Az FS badge megszerzéséhez részt kell venni az Onsite eseményen, és el kell érni legalább 10 000 AP-t az esemény ideje alatt (120 perc).
+Az FS badge megszerzéséhez részt kell venni az Onsite eseményen, meg kell hackelni a helyszínen egy portált ami media-t dob, és el kell érni legalább 10 000 AP-t az esemény ideje alatt (120 perc).
 
 Legutóbb frissítve: {{currentDate}}`}
                 onChange={(_, html) => {
